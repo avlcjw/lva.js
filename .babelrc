@@ -1,0 +1,8 @@
+{
+//    "presets": ["es2015"],
+    "presets": ["es2015-loose"],
+    "plugins": [
+//      "transform-flow-comments",
+//      "transform-class-properties"
+    ]
+}

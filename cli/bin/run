@@ -1,0 +1,50 @@
+#! /usr/bin/env node
+
+require('../console/color');
+var path = require('path');
+var webpack = require("webpack");
+var config = require('../webpack/config');
+var program = require('commander');
+var gs = require('../structure/generateStructure');
+var webpackDo = require('../webpack/do');
+
+program
+  .version(require(path.join(__dirname, '../../package.json')).version)
+  .usage('[options] [project name]')
+  .option('-g, --generate <string>', 'use -g/--generate to generate project without some models(value can be `project`)')
+  .option('-b, --build', 'use -b/--build to build project')
+  .option('-s, --watchserver', 'use -ws/--watchserver to watch project with devServer')
+  .option('-w, --watch', 'use -w/--watch to watch project without devServer')
+  .parse(process.argv);
+
+var generateOpts = program.generate ? program.generate : '';
+var build = program.build ? program.build : '';
+var watch = program.watch ? program.watch : '';
+
+if(program.watch){
+  return webpackDo.watch(config);
+}
+
+if(program.watchserver){
+  return webpackDo.watchserver(config);
+}
+
+var arg0 = program.args[0], arg1 = program.args[1];
+switch (arg0) {
+  case 'generate':
+    if (arg1) {
+      gs(generateOpts || arg1);
+      console.log(`generate project ${arg1} success!`.info);
+    } else {
+      program.help();
+    }
+    break;
+  case 'watch':
+    webpackDo.watch(config);
+    break;
+  case 'build':
+    webpackDo.pack(config);
+    break;
+  default:
+    webpackDo.pack(config);
+}
