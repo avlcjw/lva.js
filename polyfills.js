@@ -26,3 +26,17 @@ if(ENV === 'production') {
 
   // require('zone.js/dist/long-stack-trace-zone');
 }
+
+
+if (!Object.assign && typeof Object.assign === 'undefined') {
+  console.log('unknow object');
+  Object.assign = function () {
+    var args = arguments;
+    for (var i = 1; i < args.length; i++) {
+      for (var j in args[i]) {
+        args[0][j] = args[i][j];
+      }
+    }
+    return args[0];
+  }
+}

@@ -51,9 +51,9 @@ class Replacer {
       fif = '[fuck-if]';
 
     function jsonChangeToText(dom, json) {
-      let bindAttrVal = dom.attr(self.type);
-      console.log(self.type, 'self.type');
-      // console.log(dom);
+      let bindAttrVal = dom.attr('fuck-bind');
+      // console.log(self.type, 'self.type');
+      // console.log(dom,'dom');
       // console.log(json,'json');
       // console.log(bindAttrVal,'bindAttrVal');
       if (typeof json === 'string') {
@@ -61,7 +61,7 @@ class Replacer {
         dom.removeAttr('fuck-bind');
         return;
       }
-      console.log(dom, ' dom');
+      // console.log(dom, ' dom');
       dom.html(json[bindAttrVal]);
     }
 
@@ -92,7 +92,6 @@ class Replacer {
       let picTestReg = new RegExp('jpg|png|gif');
       eachArr = typeof eachArr === 'string' ? eachArr.slice(-1) == ',' ? eachArr.slice(0, eachArr.length - 1).split(',') : picTestReg.test(eachArr.slice(-3)) ? eachArr.split(',') : eachArr.split(',').slice(0, -1) : eachArr;
       dom.before('<!--Start Fuck-each-->');
-      dom.hide();
       eachArr.forEach((v, i)=> {
         if (i === eachArr.length - 1) return false;
         dom.after(dom.clone());
@@ -105,6 +104,8 @@ class Replacer {
           jsonChangeToSrc($v.find(src), eachArr[i]);
         }
         if ($v.find(bind).length > 0) {
+          // console.log($v.find(bind).attr('fuck-bind'),'22');
+          // console.log(eachArr[i],'2233');
           jsonChangeToText($v.find(bind), eachArr[i]);
         }
         if ($v.find(html).length > 0) {
@@ -145,7 +146,7 @@ class Replacer {
       if (this.type === 'fuck-each') {
         // console.log(doms,'doms');
         // console.log(json,'json');
-        console.log(doms,'doms');
+        // console.log(doms,'doms');
         doms.hide();
         cloneEach(doms, json);
       }

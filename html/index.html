@@ -5,6 +5,7 @@
   <title>wtopip - framework demo</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
   <link href="bootstrap.3.0.0.min.css" rel="stylesheet">
+  <link href="wtoip.bundle.css" rel="stylesheet">
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
   <script src="http://apps.bdimg.com/libs/html5shiv/3.7/html5shiv.min.js"></script>
@@ -16,12 +17,18 @@
   <div class="row">
     <form role="form">
       <div class="form-group">
-        <label for="username">双向绑定：username - {{username}}</label>
-        <input type="text" class="form-control" id="username" placeholder="请输入username">
+        <label for="username">
+          双向绑定：username -
+          <span fuck-bind="username"></span>
+        </label>
+        <input type="text" class="form-control" id="username" placeholder="请输入username" fuck-model="username">
       </div>
       <div class="form-group">
-        <label for="password">双向绑定：password - {{password}}</label>
-        <input type="text" class="form-control" id="password" placeholder="请输入password">
+        <label for="password">
+          双向绑定：password -
+          <span fuck-bind="password"></span>
+        </label>
+        <input type="text" class="form-control" id="password" placeholder="请输入password" fuck-model="password">
       </div>
       <!--<div class="form-group">-->
       <!--<label for="inputfile">文件输入</label>-->
@@ -33,7 +40,7 @@
       <!--<input type="checkbox">请打勾-->
       <!--</label>-->
       <!--</div>-->
-      <button type="submit" su="name" class="btn btn-primary pull-right">提交</button>
+      <button type="submit" class="btn btn-primary pull-right">提交</button>
     </form>
   </div>
 
@@ -52,8 +59,12 @@
     </div>
   </div>
 </div>
-
-
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.7/es5-shim.min.js"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/es5-shim/4.5.7/es5-sham.min.js"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/json3/3.3.2/json3.min.js"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.34.2/es6-shim.min.js"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.34.2/es6-sham.min.js"></script>-->
+<!--<script src="https://wzrd.in/standalone/es7-shim@latest"></script>-->
 <script src="jquery.1.12.0.min.js"></script>
 <!--<script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>-->
 <!--<script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>-->

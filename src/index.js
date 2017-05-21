@@ -29,15 +29,18 @@ class Wtoip {
     document.getElementsByTagName('head')[0].appendChild(x.lastChild);
 
 
+    this.$datas = Object.assign({}, config.model.datas);
+console.log(this.$datas,'this.$datas');
+    this.model = new Model(config, this);
+
+    this.view = new View(config, this);
 
 
-    this.model = new Model(config);
-    this.view = new View(config);
+
     // this.controller = new Controller()
     // console.log(this.model, 'this.model');
     // console.log(this.view, 'this.view');
     // this.rended = config.rended.bind(this.view);
-
 
 
     // console.log(this.view.container);

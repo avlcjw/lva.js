@@ -10,7 +10,7 @@ import {FlowDatas} from './FlowDatas.class';
 
 class Model {
 
-  constructor(conf) {
+  constructor(conf, parent) {
     this.appConfig = conf;
     // this.api = conf.model.api;
     // this.search = conf.model.search;
@@ -18,8 +18,7 @@ class Model {
     this.datas = conf.model.datas;
 
     // Binding.set(this.datas);
-    // console.log(this.datas);
-    FlowDatas.init(this.datas);
+    // FlowDatas.init(parent);
   }
 
   asynData(expireName) {

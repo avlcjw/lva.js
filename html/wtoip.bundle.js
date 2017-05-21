@@ -63,33 +63,12 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 4);
+/******/ 	return __webpack_require__(__webpack_require__.s = 120);
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+/******/ ({
 
-"use strict";
-/**
- * Created by o2o3 on 16/8/31.
- */
-
-
-var env = {
-    version: '2.0.0',
-    expire: false, //美业师首屏缓存   true:开启  false:关闭
-    dev: true,
-    // url:'http://192.168.1.199:7891/open/api/?method=',
-    url: 'http://crm.qiaocat.com/open/api/?method=',
-    // img_prefix:'http://192.168.1.199:7891'
-    img_prefix: 'http://crm.qiaocat.com'
-};
-
-module.exports = env;
-
-/***/ }),
-/* 1 */
+/***/ 115:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -97,15 +76,15 @@ module.exports = env;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _baseModel = __webpack_require__(9);
+var _baseModel = __webpack_require__(125);
 
 var _baseModel2 = _interopRequireDefault(_baseModel);
 
-var _baseView = __webpack_require__(15);
+var _baseView = __webpack_require__(131);
 
 var _baseView2 = _interopRequireDefault(_baseView);
 
-var _tools = __webpack_require__(11);
+var _tools = __webpack_require__(127);
 
 var _tools2 = _interopRequireDefault(_tools);
 
@@ -131,8 +110,12 @@ var Wtoip = function () {
     x.innerHTML = 'x<style>' + styleText + '</style>';
     document.getElementsByTagName('head')[0].appendChild(x.lastChild);
 
-    this.model = new _baseModel2['default'](config);
-    this.view = new _baseView2['default'](config);
+    this.$datas = Object.assign({}, config.model.datas);
+    console.log(this.$datas, 'this.$datas');
+    this.model = new _baseModel2['default'](config, this);
+
+    this.view = new _baseView2['default'](config, this);
+
     // this.controller = new Controller()
     // console.log(this.model, 'this.model');
     // console.log(this.view, 'this.view');
@@ -153,13 +136,375 @@ var Wtoip = function () {
 window.Wtoip = Wtoip;
 
 /***/ }),
-/* 2 */
+
+/***/ 116:
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(313);
+
+/*!
+ * https://github.com/es-shims/es5-shim
+ * @license es5-shim Copyright 2009-2015 by contributors, MIT License
+ * see https://github.com/es-shims/es5-shim/blob/v4.1.3/LICENSE
+ */
+ var call = Function.prototype.call;
+ var prototypeOfObject = Object.prototype;
+ var owns = call.bind(prototypeOfObject.hasOwnProperty);
+
+ // If JS engine supports accessors creating shortcuts.
+ var defineGetter;
+ var defineSetter;
+ var lookupGetter;
+ var lookupSetter;
+ var supportsAccessors = owns(prototypeOfObject, '__defineGetter__');
+ if (supportsAccessors) {
+     /*eslint-disable no-underscore-dangle */
+     defineGetter = call.bind(prototypeOfObject.__defineGetter__);
+     defineSetter = call.bind(prototypeOfObject.__defineSetter__);
+     lookupGetter = call.bind(prototypeOfObject.__lookupGetter__);
+     lookupSetter = call.bind(prototypeOfObject.__lookupSetter__);
+     /*eslint-enable no-underscore-dangle */
+ }
+
+ if (!Object.freeze) {
+     Object.freeze = function freeze(object) {
+         if (Object(object) !== object) {
+             throw new TypeError('Object.freeze can only be called on Objects.');
+         }
+         // this is misleading and breaks feature-detection, but
+         // allows "securable" code to "gracefully" degrade to working
+         // but insecure code.
+         return object;
+     };
+ }
+ if (!Object.create) {
+
+     // Contributed by Brandon Benvie, October, 2012
+     var createEmpty;
+     var supportsProto = !({ __proto__: null } instanceof Object);
+                         // the following produces false positives
+                         // in Opera Mini => not a reliable check
+                         // Object.prototype.__proto__ === null
+     /*global document */
+     if (supportsProto || typeof document === 'undefined') {
+         createEmpty = function () {
+             return { __proto__: null };
+         };
+     } else {
+         // In old IE __proto__ can't be used to manually set `null`, nor does
+         // any other method exist to make an object that inherits from nothing,
+         // aside from Object.prototype itself. Instead, create a new global
+         // object and *steal* its Object.prototype and strip it bare. This is
+         // used as the prototype to create nullary objects.
+         createEmpty = function () {
+             var iframe = document.createElement('iframe');
+             var parent = document.body || document.documentElement;
+             iframe.style.display = 'none';
+             parent.appendChild(iframe);
+             /*eslint-disable no-script-url */
+             iframe.src = 'javascript:';
+             /*eslint-enable no-script-url */
+             var empty = iframe.contentWindow.Object.prototype;
+             parent.removeChild(iframe);
+             iframe = null;
+             delete empty.constructor;
+             delete empty.hasOwnProperty;
+             delete empty.propertyIsEnumerable;
+             delete empty.isPrototypeOf;
+             delete empty.toLocaleString;
+             delete empty.toString;
+             delete empty.valueOf;
+             /*eslint-disable no-proto */
+             empty.__proto__ = null;
+             /*eslint-enable no-proto */
+
+             var Empty = function Empty() {};
+             Empty.prototype = empty;
+             // short-circuit future calls
+             createEmpty = function () {
+                 return new Empty();
+             };
+             return new Empty();
+         };
+     }
+
+     Object.create = function create(prototype, properties) {
+
+         var object;
+         var Type = function Type() {}; // An empty constructor.
+
+         if (prototype === null) {
+             object = createEmpty();
+         } else {
+             if (typeof prototype !== 'object' && typeof prototype !== 'function') {
+                 // In the native implementation `parent` can be `null`
+                 // OR *any* `instanceof Object`  (Object|Function|Array|RegExp|etc)
+                 // Use `typeof` tho, b/c in old IE, DOM elements are not `instanceof Object`
+                 // like they are in modern browsers. Using `Object.create` on DOM elements
+                 // is...err...probably inappropriate, but the native version allows for it.
+                 throw new TypeError('Object prototype may only be an Object or null'); // same msg as Chrome
+             }
+             Type.prototype = prototype;
+             object = new Type();
+             // IE has no built-in implementation of `Object.getPrototypeOf`
+             // neither `__proto__`, but this manually setting `__proto__` will
+             // guarantee that `Object.getPrototypeOf` will work as expected with
+             // objects created using `Object.create`
+             /*eslint-disable no-proto */
+             object.__proto__ = prototype;
+             /*eslint-enable no-proto */
+         }
+
+         if (properties !== void 0) {
+             Object.defineProperties(object, properties);
+         }
+
+         return object;
+     };
+ }
+
+
+ var doesDefinePropertyWork = function doesDefinePropertyWork(object) {
+     try {
+         Object.defineProperty(object, 'sentinel', {});
+         return 'sentinel' in object;
+     } catch (exception) {
+         return false;
+     }
+ };
+
+ // check whether defineProperty works if it's given. Otherwise,
+ // shim partially.
+ if (Object.defineProperty) {
+     var definePropertyWorksOnObject = doesDefinePropertyWork({});
+     var definePropertyWorksOnDom = typeof document === 'undefined' ||
+         doesDefinePropertyWork(document.createElement('div'));
+     if (!definePropertyWorksOnObject || !definePropertyWorksOnDom) {
+         var definePropertyFallback = Object.defineProperty,
+             definePropertiesFallback = Object.defineProperties;
+     }
+ }
+ if (!Object.defineProperty || definePropertyFallback) {
+     var definePropertyFallback = Object.defineProperty;
+     var ERR_NON_OBJECT_DESCRIPTOR = 'Property description must be an object: ';
+     var ERR_NON_OBJECT_TARGET = 'Object.defineProperty called on non-object: ';
+     var ERR_ACCESSORS_NOT_SUPPORTED = 'getters & setters can not be defined on this javascript engine';
+
+     Object.defineProperty = function defineProperty(object, property, descriptor) {
+         if ((typeof object !== 'object' && typeof object !== 'function') || object === null) {
+             throw new TypeError(ERR_NON_OBJECT_TARGET + object);
+         }
+         if ((typeof descriptor !== 'object' && typeof descriptor !== 'function') || descriptor === null) {
+             throw new TypeError(ERR_NON_OBJECT_DESCRIPTOR + descriptor);
+         }
+         // make a valiant attempt to use the real defineProperty
+         // for I8's DOM elements.
+         if (definePropertyFallback) {
+             try {
+                 return definePropertyFallback.call(Object, object, property, descriptor);
+             } catch (exception) {
+                 // try the shim if the real one doesn't work
+             }
+         }
+
+         // If it's a data property.
+         if ('value' in descriptor) {
+             // fail silently if 'writable', 'enumerable', or 'configurable'
+             // are requested but not supported
+             /*
+             // alternate approach:
+             if ( // can't implement these features; allow false but not true
+                 ('writable' in descriptor && !descriptor.writable) ||
+                 ('enumerable' in descriptor && !descriptor.enumerable) ||
+                 ('configurable' in descriptor && !descriptor.configurable)
+             ))
+                 throw new RangeError(
+                     'This implementation of Object.defineProperty does not support configurable, enumerable, or writable.'
+                 );
+             */
+
+             if (supportsAccessors && (lookupGetter(object, property) || lookupSetter(object, property))) {
+                 // As accessors are supported only on engines implementing
+                 // `__proto__` we can safely override `__proto__` while defining
+                 // a property to make sure that we don't hit an inherited
+                 // accessor.
+                 /*eslint-disable no-proto */
+                 var prototype = object.__proto__;
+                 object.__proto__ = prototypeOfObject;
+                 // Deleting a property anyway since getter / setter may be
+                 // defined on object itself.
+                 delete object[property];
+                 object[property] = descriptor.value;
+                 // Setting original `__proto__` back now.
+                 object.__proto__ = prototype;
+                 /*eslint-enable no-proto */
+             } else {
+                 object[property] = descriptor.value;
+             }
+         }
+         return object;
+     };
+ }
+
+ // ES5 15.2.3.7
+ // http://es5.github.com/#x15.2.3.7
+ if (!Object.defineProperties || definePropertiesFallback) {
+     Object.defineProperties = function defineProperties(object, properties) {
+         // make a valiant attempt to use the real defineProperties
+         if (definePropertiesFallback) {
+             try {
+                 return definePropertiesFallback.call(Object, object, properties);
+             } catch (exception) {
+                 // try the shim if the real one doesn't work
+             }
+         }
+
+         Object.keys(properties).forEach(function (property) {
+             if (property !== '__proto__') {
+                 Object.defineProperty(object, property, properties[property]);
+             }
+         });
+         return object;
+     };
+ }
+ var doesGetOwnPropertyDescriptorWork = function doesGetOwnPropertyDescriptorWork(object) {
+     try {
+         object.sentinel = 0;
+         return Object.getOwnPropertyDescriptor(object, 'sentinel').value === 0;
+     } catch (exception) {
+         return false;
+     }
+ };
+
+ //check whether getOwnPropertyDescriptor works if it's given. Otherwise,
+ //shim partially.
+ if (Object.defineProperty) {
+     var getOwnPropertyDescriptorWorksOnObject = doesGetOwnPropertyDescriptorWork({});
+     var getOwnPropertyDescriptorWorksOnDom = typeof document === 'undefined' ||
+     doesGetOwnPropertyDescriptorWork(document.createElement('div'));
+     if (!getOwnPropertyDescriptorWorksOnDom || !getOwnPropertyDescriptorWorksOnObject) {
+         var getOwnPropertyDescriptorFallback = Object.getOwnPropertyDescriptor;
+     }
+ }
+
+ if (!Object.getOwnPropertyDescriptor || getOwnPropertyDescriptorFallback) {
+     var ERR_NON_OBJECT = 'Object.getOwnPropertyDescriptor called on a non-object: ';
+
+     /*eslint-disable no-proto */
+     Object.getOwnPropertyDescriptor = function getOwnPropertyDescriptor(object, property) {
+         if ((typeof object !== 'object' && typeof object !== 'function') || object === null) {
+             throw new TypeError(ERR_NON_OBJECT + object);
+         }
+
+         // make a valiant attempt to use the real getOwnPropertyDescriptor
+         // for I8's DOM elements.
+         if (getOwnPropertyDescriptorFallback) {
+             try {
+                 return getOwnPropertyDescriptorFallback.call(Object, object, property);
+             } catch (exception) {
+                 // try the shim if the real one doesn't work
+             }
+         }
+
+         var descriptor;
+
+         // If object does not owns property return undefined immediately.
+         if (!owns(object, property)) {
+             return descriptor;
+         }
+
+         // If object has a property then it's for sure both `enumerable` and
+         // `configurable`.
+         descriptor = { enumerable: true, configurable: true };
+
+         // If JS engine supports accessor properties then property may be a
+         // getter or setter.
+         if (supportsAccessors) {
+             // Unfortunately `__lookupGetter__` will return a getter even
+             // if object has own non getter property along with a same named
+             // inherited getter. To avoid misbehavior we temporary remove
+             // `__proto__` so that `__lookupGetter__` will return getter only
+             // if it's owned by an object.
+             var prototype = object.__proto__;
+             var notPrototypeOfObject = object !== prototypeOfObject;
+             // avoid recursion problem, breaking in Opera Mini when
+             // Object.getOwnPropertyDescriptor(Object.prototype, 'toString')
+             // or any other Object.prototype accessor
+             if (notPrototypeOfObject) {
+                 object.__proto__ = prototypeOfObject;
+             }
+
+             var getter = lookupGetter(object, property);
+             var setter = lookupSetter(object, property);
+
+             if (notPrototypeOfObject) {
+                 // Once we have getter and setter we can put values back.
+                 object.__proto__ = prototype;
+             }
+
+             if (getter || setter) {
+                 if (getter) {
+                     descriptor.get = getter;
+                 }
+                 if (setter) {
+                     descriptor.set = setter;
+                 }
+                 // If it was accessor property we're done and return here
+                 // in order to avoid adding `value` to the descriptor.
+                 return descriptor;
+             }
+         }
+
+         // If we got this far we know that object has an own property that is
+         // not an accessor so we set it as a value and return descriptor.
+         descriptor.value = object[property];
+         descriptor.writable = true;
+         return descriptor;
+     };
+     /*eslint-enable no-proto */
+ }
+
+ // ES5 15.2.3.4
+ // http://es5.github.com/#x15.2.3.4
+ if (!Object.getOwnPropertyNames) {
+     Object.getOwnPropertyNames = function getOwnPropertyNames(object) {
+         return Object.keys(object);
+     };
+ }
+
+ if (!Object.getPrototypeOf) {
+     // https://github.com/es-shims/es5-shim/issues#issue/2
+     // http://ejohn.org/blog/objectgetprototypeof/
+     // recommended by fschaefer on github
+     //
+     // sure, and webreflection says ^_^
+     // ... this will nerever possibly return null
+     // ... Opera Mini breaks here with infinite loops
+     Object.getPrototypeOf = function getPrototypeOf(object) {
+         /*eslint-disable no-proto */
+         var proto = object.__proto__;
+         /*eslint-enable no-proto */
+         if (proto || proto === null) {
+             return proto;
+         } else if (object.constructor) {
+             return object.constructor.prototype;
+         } else {
+             return prototypeOfObject;
+         }
+     };
+}
+
+
+/***/ }),
+
+/***/ 117:
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
 
 /***/ }),
-/* 3 */
+
+/***/ 119:
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -2234,20 +2579,26 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 
 /***/ }),
-/* 4 */
+
+/***/ 120:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(3);
+__webpack_require__(119);
 
-__webpack_require__(2);
+__webpack_require__(116);
 
-__webpack_require__(1);
+__webpack_require__(319);
+
+__webpack_require__(117);
+
+__webpack_require__(115);
 
 /***/ }),
-/* 5 */
+
+/***/ 121:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2286,7 +2637,8 @@ var Loading = function () {
 exports['default'] = Loading;
 
 /***/ }),
-/* 6 */
+
+/***/ 122:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2295,7 +2647,7 @@ exports['default'] = Loading;
  */
 
 
-var env = __webpack_require__(0);
+var env = __webpack_require__(59);
 var api = {
 
     ajax: function ajax(configObj) {
@@ -2346,7 +2698,8 @@ var api = {
 module.exports = api;
 
 /***/ }),
-/* 7 */
+
+/***/ 123:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2357,7 +2710,7 @@ module.exports = api;
 
 exports.__esModule = true;
 
-var _devconfig = __webpack_require__(0);
+var _devconfig = __webpack_require__(59);
 
 var _devconfig2 = _interopRequireDefault(_devconfig);
 
@@ -2391,7 +2744,8 @@ var Fliter = function () {
 exports['default'] = Fliter;
 
 /***/ }),
-/* 8 */
+
+/***/ 124:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2407,33 +2761,56 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var FlowDatas = function () {
   function FlowDatas(obj) {
-    _classCallCheck(this, FlowDatas);
+    // this.datasObject = obj;
 
-    this.datasObject = obj;
+    _classCallCheck(this, FlowDatas);
   }
 
-  FlowDatas.init = function init() {
-    var _this = this;
+  FlowDatas.init = function init(app) {
+    var obj = app.$datas;
+    console.log(app, 'obj');
 
-    for (var i in this.datasObject) {
-      if (this.datasObject.hasOwnProperty(i) && Object.getOwnPropertyDescriptor(this.datasObject, i).configurable) {
-        (function () {
-          var obj = _this.datasObject;
-          var _tmp = void 0;
-          Object.defineProperty(obj, i, {
-            get: function get() {
-              console.log('load data....');
-              return _tmp;
-            },
-            set: function set(value) {
-              console.log('set data....');
-              _tmp = value;
-            },
-            configurable: false
-          });
-        })();
+    var _loop = function _loop(i) {
+      if (obj.hasOwnProperty(i) && Object.getOwnPropertyDescriptor(obj, i).configurable) {
+        var _tmp = void 0;
+        Object.defineProperty(obj, i, {
+          get: function get() {
+            console.log('load data....', _tmp);
+            return _tmp;
+          },
+          set: function set(value) {
+            console.log('set data....', value);
+            app.model.datas[i] = value;
+            _tmp = value;
+          }
+        });
       }
+      // console.log(Object.getOwnPropertyDescriptor(obj, i), 'obj');
+    };
+
+    for (var i in obj) {
+      _loop(i);
     }
+  };
+
+  FlowDatas.addFlowData = function addFlowData(app, dom, attribute) {
+    console.log(app.$datas, 'app.$datas');
+    // console.log(dom, 'dom');
+    // console.log(attribute, 'attribute');
+    var _tmp = void 0;
+    Object.defineProperty(app.$datas, attribute, {
+      get: function get() {
+        console.log('Load data....', _tmp);
+        return _tmp;
+      },
+      set: function set(value) {
+        console.log('Change DOM....', value);
+        app.view.container.find('[fuck-bind=' + attribute + ']').text(value);
+        dom.val(value);
+        // dom.text(value);
+        _tmp = value;
+      }
+    });
   };
 
   return FlowDatas;
@@ -2442,7 +2819,8 @@ var FlowDatas = function () {
 exports.FlowDatas = FlowDatas;
 
 /***/ }),
-/* 9 */
+
+/***/ 125:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2453,30 +2831,30 @@ exports.FlowDatas = FlowDatas;
 
 exports.__esModule = true;
 
-var _devconfig = __webpack_require__(0);
+var _devconfig = __webpack_require__(59);
 
 var _devconfig2 = _interopRequireDefault(_devconfig);
 
-var _method = __webpack_require__(6);
+var _method = __webpack_require__(122);
 
 var _method2 = _interopRequireDefault(_method);
 
-var _loading = __webpack_require__(5);
+var _loading = __webpack_require__(121);
 
 var _loading2 = _interopRequireDefault(_loading);
 
-var _storage = __webpack_require__(10);
+var _storage = __webpack_require__(126);
 
 var _storage2 = _interopRequireDefault(_storage);
 
-var _FlowDatas = __webpack_require__(8);
+var _FlowDatas = __webpack_require__(124);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Model = function () {
-  function Model(conf) {
+  function Model(conf, parent) {
     _classCallCheck(this, Model);
 
     this.appConfig = conf;
@@ -2486,8 +2864,7 @@ var Model = function () {
     this.datas = conf.model.datas;
 
     // Binding.set(this.datas);
-    // console.log(this.datas);
-    _FlowDatas.FlowDatas.init(this.datas);
+    // FlowDatas.init(parent);
   }
 
   Model.prototype.asynData = function asynData(expireName) {
@@ -2600,7 +2977,8 @@ var Model = function () {
 exports['default'] = Model;
 
 /***/ }),
-/* 10 */
+
+/***/ 126:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2661,7 +3039,8 @@ var Storage = function () {
 exports['default'] = Storage;
 
 /***/ }),
-/* 11 */
+
+/***/ 127:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2703,7 +3082,8 @@ var Tools = function Tools(type) {
 exports["default"] = Tools;
 
 /***/ }),
-/* 12 */
+
+/***/ 128:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2711,26 +3091,41 @@ exports["default"] = Tools;
 
 exports.__esModule = true;
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _FlowDatas = __webpack_require__(124);
 
-/**
- * Created by o2o3 on 16/10/24.
- */
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } /**
+                                                                                                                                                           * Created by o2o3 on 16/10/24.
+                                                                                                                                                           */
+
 
 var Bind = function () {
-    function Bind(type, container) {
-        _classCallCheck(this, Bind);
-    }
+  function Bind(app, dom, attr) {
+    _classCallCheck(this, Bind);
 
-    Bind.prototype.replace = function replace(json) {};
+    this.dom = dom;
+    this.attr = attr;
+    // console.log(app, 'app');
+    $(document).on('input', '[fuck-model=' + attr + ']', function (e) {
+      app.$datas[attr] = $(this).val();
+    });
+    _FlowDatas.FlowDatas.addFlowData(app, this.dom, this.attr);
+    // dom.bind('input', function (e) {
+    //   console.log(e, 'e')
+    // });
+  }
 
-    return Bind;
+  Bind.prototype.addBind = function addBind(attribute) {
+    // FlowDatas.addFlowData(this.dom, this.attr);
+  };
+
+  return Bind;
 }();
 
-exports["default"] = Bind;
+exports['default'] = Bind;
 
 /***/ }),
-/* 13 */
+
+/***/ 129:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2865,7 +3260,8 @@ var Event = function () {
 exports['default'] = Event;
 
 /***/ }),
-/* 14 */
+
+/***/ 130:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2930,9 +3326,9 @@ var Replacer = function () {
         fif = '[fuck-if]';
 
     function jsonChangeToText(dom, json) {
-      var bindAttrVal = dom.attr(self.type);
-      console.log(self.type, 'self.type');
-      // console.log(dom);
+      var bindAttrVal = dom.attr('fuck-bind');
+      // console.log(self.type, 'self.type');
+      // console.log(dom,'dom');
       // console.log(json,'json');
       // console.log(bindAttrVal,'bindAttrVal');
       if (typeof json === 'string') {
@@ -2940,7 +3336,7 @@ var Replacer = function () {
         dom.removeAttr('fuck-bind');
         return;
       }
-      console.log(dom, ' dom');
+      // console.log(dom, ' dom');
       dom.html(json[bindAttrVal]);
     }
 
@@ -2971,7 +3367,6 @@ var Replacer = function () {
       var picTestReg = new RegExp('jpg|png|gif');
       eachArr = typeof eachArr === 'string' ? eachArr.slice(-1) == ',' ? eachArr.slice(0, eachArr.length - 1).split(',') : picTestReg.test(eachArr.slice(-3)) ? eachArr.split(',') : eachArr.split(',').slice(0, -1) : eachArr;
       dom.before('<!--Start Fuck-each-->');
-      dom.hide();
       eachArr.forEach(function (v, i) {
         if (i === eachArr.length - 1) return false;
         dom.after(dom.clone());
@@ -2984,6 +3379,8 @@ var Replacer = function () {
           jsonChangeToSrc($v.find(src), eachArr[i]);
         }
         if ($v.find(bind).length > 0) {
+          // console.log($v.find(bind).attr('fuck-bind'),'22');
+          // console.log(eachArr[i],'2233');
           jsonChangeToText($v.find(bind), eachArr[i]);
         }
         if ($v.find(html).length > 0) {
@@ -3023,7 +3420,7 @@ var Replacer = function () {
       if (this.type === 'fuck-each') {
         // console.log(doms,'doms');
         // console.log(json,'json');
-        console.log(doms, 'doms');
+        // console.log(doms,'doms');
         doms.hide();
         cloneEach(doms, json);
       }
@@ -3063,7 +3460,8 @@ var Replacer = function () {
 exports['default'] = Replacer;
 
 /***/ }),
-/* 15 */
+
+/***/ 131:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3073,19 +3471,19 @@ exports.__esModule = true;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _Fliter = __webpack_require__(7);
+var _Fliter = __webpack_require__(123);
 
 var _Fliter2 = _interopRequireDefault(_Fliter);
 
-var _Replacer = __webpack_require__(14);
+var _Replacer = __webpack_require__(130);
 
 var _Replacer2 = _interopRequireDefault(_Replacer);
 
-var _Event = __webpack_require__(13);
+var _Event = __webpack_require__(129);
 
 var _Event2 = _interopRequireDefault(_Event);
 
-var _Bind = __webpack_require__(12);
+var _Bind = __webpack_require__(128);
 
 var _Bind2 = _interopRequireDefault(_Bind);
 
@@ -3099,9 +3497,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var global_datas;
 
 var View = function () {
-  function View(conf) {
+  function View(conf, app) {
     _classCallCheck(this, View);
 
+    this.app = app;
     this.appConfig = conf;
     this.container = $(conf.view.container);
     this.events = conf.view.events;
@@ -3113,6 +3512,8 @@ var View = function () {
   };
 
   View.prototype.replace = function replace(html, json) {
+    var _this = this;
+
     // console.log(this,321);
     var $con = this.container;
     var _innerhtml = $con.html();
@@ -3127,6 +3528,16 @@ var View = function () {
     if (findDomByAttr('Fuck-each')) {
       var eachs = new _Replacer2['default']('fuck-each', this.container, global_datas);
       eachs.replace(json);
+    }
+
+    if (findDomByAttr('Fuck-model')) {
+      var modelDom = findDomByAttr('Fuck-model');
+      modelDom.each(function (i, v) {
+        var modelAttr = $(v).attr('Fuck-model');
+        console.log(_this.app, 'this.app');
+        var ms = new _Bind2['default'](_this.app, $(v), modelAttr);
+        // ms.addBind();
+      });
     }
 
     if (findDomByAttr('Fuck-bind')) {
@@ -3151,9 +3562,10 @@ var View = function () {
 
     if (findParantheses(binDataReg)) {
       var replaces = findParantheses(binDataReg);
-      var newStr = this.container.html();
+      var newStr = $con.html();
 
       replaces.forEach(function (v, i) {
+        console.log(v, 'v21');
         var newProp = v.slice(2).slice(0, -2);
         var reg = new RegExp(v, 'g');
         newStr = newStr.replace(reg, json[newProp]);
@@ -3203,11 +3615,11 @@ var View = function () {
   };
 
   View.prototype.appendMore = function appendMore(datas) {
-    var _this = this;
+    var _this2 = this;
 
     return new Promise(function (resolve, reject) {
       if (datas && (typeof datas === 'undefined' ? 'undefined' : _typeof(datas)) === 'object') {
-        _this.replace(datas);
+        _this2.replace(datas);
         resolve('rended.');
       } else {
         reject('bad work render.');
@@ -3220,5 +3632,103 @@ var View = function () {
 
 exports['default'] = View;
 
+/***/ }),
+
+/***/ 313:
+/***/ (function(module, exports) {
+
+// Console-polyfill. MIT license.
+// https://github.com/paulmillr/console-polyfill
+// Make it safe to do console.log() always.
+(function(global) {
+  'use strict';
+  global.console = global.console || {};
+  var con = global.console;
+  var prop, method;
+  var empty = {};
+  var dummy = function() {};
+  var properties = 'memory'.split(',');
+  var methods = ('assert,clear,count,debug,dir,dirxml,error,exception,group,' +
+     'groupCollapsed,groupEnd,info,log,markTimeline,profile,profiles,profileEnd,' +
+     'show,table,time,timeEnd,timeline,timelineEnd,timeStamp,trace,warn').split(',');
+  while (prop = properties.pop()) if (!con[prop]) con[prop] = empty;
+  while (method = methods.pop()) if (!con[method]) con[method] = dummy;
+})(typeof window === 'undefined' ? this : window);
+
+
+/***/ }),
+
+/***/ 319:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+// Polyfills
+// (these modules are what are in 'angular2/bundles/angular2-polyfills' so don't use that here)
+
+// import 'ie-shim'; // Internet Explorer
+// import 'es6-shim';
+// import 'es6-promise';
+// import 'es7-reflect-metadata';
+
+// Prefer CoreJS over the polyfills above
+// import 'core-js/es6';
+// import 'core-js/es7/reflect';
+// require('zone.js/dist/zone');
+
+
+if (!ENV) {
+  var ENV = 'development';
+}
+
+if (ENV === 'production') {
+  // Production
+} else {
+  // Development
+
+
+  Error.stackTraceLimit = Infinity;
+
+  // require('zone.js/dist/long-stack-trace-zone');
+}
+
+if (!Object.assign && typeof Object.assign === 'undefined') {
+  console.log('unknow object');
+  Object.assign = function () {
+    var args = arguments;
+    for (var i = 1; i < args.length; i++) {
+      for (var j in args[i]) {
+        args[0][j] = args[i][j];
+      }
+    }
+    return args[0];
+  };
+}
+
+/***/ }),
+
+/***/ 59:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/**
+ * Created by o2o3 on 16/8/31.
+ */
+
+
+var env = {
+    version: '2.0.0',
+    expire: false, //美业师首屏缓存   true:开启  false:关闭
+    dev: true,
+    // url:'http://192.168.1.199:7891/open/api/?method=',
+    url: 'http://crm.qiaocat.com/open/api/?method=',
+    // img_prefix:'http://192.168.1.199:7891'
+    img_prefix: 'http://crm.qiaocat.com'
+};
+
+module.exports = env;
+
 /***/ })
-/******/ ]);
+
+/******/ });

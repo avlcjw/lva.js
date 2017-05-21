@@ -32,6 +32,8 @@
     "webpack": "^2.4.1"
   },
   "dependencies": {
+    "babel-polyfill": "^6.23.0",
+    "es5-sham-ie8": "^1.0.1",
     "es5-shim": "^4.5.9"
   }
 }

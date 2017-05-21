@@ -9,7 +9,8 @@ import Bind from '../view/Bind.class';
 var global_datas;
 
 class View {
-  constructor(conf) {
+  constructor(conf, app) {
+    this.app = app;
     this.appConfig = conf;
     this.container = $(conf.view.container);
     this.events = conf.view.events;
@@ -37,6 +38,16 @@ class View {
       eachs.replace(json);
     }
 
+    if (findDomByAttr('Fuck-model')) {
+      let modelDom = findDomByAttr('Fuck-model');
+      modelDom.each((i,v)=>{
+        let modelAttr = $(v).attr('Fuck-model');
+        console.log(this.app,'this.app');
+        let ms = new Bind(this.app, $(v), modelAttr);
+        // ms.addBind();
+      });
+    }
+
     if (findDomByAttr('Fuck-bind')) {
       let bs = new Replacer('fuck-bind', this.container, global_datas);
       bs.replace(json);
@@ -59,9 +70,10 @@ class View {
 
     if (findParantheses(binDataReg)) {
       let replaces = findParantheses(binDataReg);
-      let newStr = this.container.html();
+      let newStr = $con.html();
 
       replaces.forEach((v, i)=> {
+        console.log(v, 'v21');
         let newProp = v.slice(2).slice(0, -2);
         let reg = new RegExp(v, 'g');
         newStr = newStr.replace(reg, json[newProp]);

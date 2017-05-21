@@ -4,7 +4,11 @@
 /*
  * polyfill es5
  */
+// import 'es5';
+// import 'babel-polyfill';
 import 'es5-shim';
+import 'es5-sham-ie8';
+import './polyfills';
 
 
 /*
