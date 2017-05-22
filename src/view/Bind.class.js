@@ -2,6 +2,7 @@
  * Created by o2o3 on 16/10/24.
  */
 import {FlowDatas} from '../model/FlowDatas.class';
+import ie from '../tools/navigator';
 
 class Bind {
 
@@ -9,7 +10,9 @@ class Bind {
     this.dom = dom;
     this.attr = attr;
     // console.log(app, 'app');
-    $(document).on('input', '[fuck-model=' + attr + ']', function (e) {
+    let str = ie === "IE8" ? 'keyup' : 'input';
+    $(document).on(str, '[fuck-model=' + attr + ']', function (e) {
+      console.log(e, 'e');
       app.$datas[attr] = $(this).val();
     });
     FlowDatas.addFlowData(app, this.dom, this.attr);

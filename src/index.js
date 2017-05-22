@@ -5,14 +5,14 @@
 import Model from './model/baseModel';
 import View from './view/baseView';
 import Tools from './tools/tools';
-
+import ie from './tools/navigator';
 
 class Wtoip {
   constructor(config) {
     if (typeof config === 'object') {
       // alert(123222);
     }
-
+    console.log(config, 'config');
     /*
      *  防止页面 fuck-if 的闪烁
      */
@@ -23,18 +23,15 @@ class Wtoip {
         }
         [fuck-each]{
           display:none;      
-        }
-        `;
+        }`;
     x.innerHTML = `x<style>${styleText}</style>`;
     document.getElementsByTagName('head')[0].appendChild(x.lastChild);
 
 
-    this.$datas = Object.assign({}, config.model.datas);
-console.log(this.$datas,'this.$datas');
+    this.$datas = Object.assign(ie === 'IE8' ? $(config.view.container)[0] : {}, config.model.datas);
     this.model = new Model(config, this);
 
     this.view = new View(config, this);
-
 
 
     // this.controller = new Controller()

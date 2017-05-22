@@ -63,12 +63,156 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 120);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
-/******/ ({
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
 
-/***/ 115:
+"use strict";
+/**
+ * Created by o2o3 on 16/8/31.
+ */
+
+
+var env = {
+    version: '2.0.0',
+    expire: false, //美业师首屏缓存   true:开启  false:关闭
+    dev: true,
+    // url:'http://192.168.1.199:7891/open/api/?method=',
+    url: 'http://crm.qiaocat.com/open/api/?method=',
+    // img_prefix:'http://192.168.1.199:7891'
+    img_prefix: 'http://crm.qiaocat.com'
+};
+
+module.exports = env;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Created by o2o3 on 16/11/1.
+ */
+
+var FlowDatas = function () {
+  function FlowDatas(obj) {
+    // this.datasObject = obj;
+
+    _classCallCheck(this, FlowDatas);
+  }
+
+  FlowDatas.init = function init(app) {
+    var obj = app.$datas;
+    console.log(app, 'obj');
+
+    var _loop = function _loop(i) {
+      if (obj.hasOwnProperty(i) && Object.getOwnPropertyDescriptor(obj, i).configurable) {
+        var _tmp = void 0;
+        Object.defineProperty(obj, i, {
+          get: function get() {
+            console.log('load data....', _tmp);
+            return _tmp;
+          },
+          set: function set(value) {
+            console.log('set data....', value);
+            app.model.datas[i] = value;
+            _tmp = value;
+          }
+        });
+      }
+      // console.log(Object.getOwnPropertyDescriptor(obj, i), 'obj');
+    };
+
+    for (var i in obj) {
+      _loop(i);
+    }
+  };
+
+  FlowDatas.addFlowData = function addFlowData(app, dom, attribute) {
+    console.log(app.$datas, 'app.$datas');
+    // console.log(dom, 'dom');
+    // console.log(attribute, 'attribute');
+    var _tmp = void 0;
+    Object.defineProperty(app.$datas, attribute, {
+      get: function get() {
+        console.log('Load data....', _tmp);
+        return _tmp;
+      },
+      set: function set(value) {
+        console.log('Change DOM....', value);
+        app.view.container.find('[fuck-bind=' + attribute + ']').text(value);
+        dom.val(value);
+        // dom.text(value);
+        _tmp = value;
+      }
+    });
+  };
+
+  return FlowDatas;
+}();
+
+exports.FlowDatas = FlowDatas;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+// Polyfills
+// (these modules are what are in 'angular2/bundles/angular2-polyfills' so don't use that here)
+
+// import 'ie-shim'; // Internet Explorer
+// import 'es6-shim';
+// import 'es6-promise';
+// import 'es7-reflect-metadata';
+
+// Prefer CoreJS over the polyfills above
+// import 'core-js/es6';
+// import 'core-js/es7/reflect';
+// require('zone.js/dist/zone');
+
+
+if (!ENV) {
+  var ENV = 'development';
+}
+
+if (ENV === 'production') {
+  // Production
+} else {
+  // Development
+
+
+  Error.stackTraceLimit = Infinity;
+
+  // require('zone.js/dist/long-stack-trace-zone');
+}
+
+if (!Object.assign && typeof Object.assign === 'undefined') {
+  console.log('unknow object');
+  Object.assign = function () {
+    var args = arguments;
+    for (var i = 1; i < args.length; i++) {
+      for (var j in args[i]) {
+        args[0][j] = args[i][j];
+      }
+    }
+    return args[0];
+  };
+}
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -76,17 +220,21 @@
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _baseModel = __webpack_require__(125);
+var _baseModel = __webpack_require__(11);
 
 var _baseModel2 = _interopRequireDefault(_baseModel);
 
-var _baseView = __webpack_require__(131);
+var _baseView = __webpack_require__(17);
 
 var _baseView2 = _interopRequireDefault(_baseView);
 
-var _tools = __webpack_require__(127);
+var _tools = __webpack_require__(13);
 
 var _tools2 = _interopRequireDefault(_tools);
+
+var _navigator = __webpack_require__(23);
+
+var _navigator2 = _interopRequireDefault(_navigator);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -98,20 +246,19 @@ var Wtoip = function () {
   function Wtoip(config) {
     _classCallCheck(this, Wtoip);
 
-    if ((typeof config === 'undefined' ? 'undefined' : _typeof(config)) === 'object') {}
-    // alert(123222);
-
-
+    if ((typeof config === 'undefined' ? 'undefined' : _typeof(config)) === 'object') {
+      // alert(123222);
+    }
+    console.log(config, 'config');
     /*
      *  防止页面 fuck-if 的闪烁
      */
     var x = document.createElement('div');
-    var styleText = '\n        [fuck-if]{\n          display:none;\n        }\n        [fuck-each]{\n          display:none;      \n        }\n        ';
+    var styleText = '\n        [fuck-if]{\n          display:none;\n        }\n        [fuck-each]{\n          display:none;      \n        }';
     x.innerHTML = 'x<style>' + styleText + '</style>';
     document.getElementsByTagName('head')[0].appendChild(x.lastChild);
 
-    this.$datas = Object.assign({}, config.model.datas);
-    console.log(this.$datas, 'this.$datas');
+    this.$datas = Object.assign(_navigator2['default'] === 'IE8' ? $(config.view.container)[0] : {}, config.model.datas);
     this.model = new _baseModel2['default'](config, this);
 
     this.view = new _baseView2['default'](config, this);
@@ -136,11 +283,10 @@ var Wtoip = function () {
 window.Wtoip = Wtoip;
 
 /***/ }),
-
-/***/ 116:
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(313);
+__webpack_require__(18);
 
 /*!
  * https://github.com/es-shims/es5-shim
@@ -496,15 +642,7 @@ __webpack_require__(313);
 
 
 /***/ }),
-
-/***/ 117:
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ 119:
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -2579,26 +2717,30 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 
 /***/ }),
+/* 6 */
+/***/ (function(module, exports) {
 
-/***/ 120:
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-__webpack_require__(119);
+__webpack_require__(5);
 
-__webpack_require__(116);
+__webpack_require__(4);
 
-__webpack_require__(319);
+__webpack_require__(2);
 
-__webpack_require__(117);
+__webpack_require__(6);
 
-__webpack_require__(115);
+__webpack_require__(3);
 
 /***/ }),
-
-/***/ 121:
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2637,8 +2779,7 @@ var Loading = function () {
 exports['default'] = Loading;
 
 /***/ }),
-
-/***/ 122:
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2647,7 +2788,7 @@ exports['default'] = Loading;
  */
 
 
-var env = __webpack_require__(59);
+var env = __webpack_require__(0);
 var api = {
 
     ajax: function ajax(configObj) {
@@ -2698,8 +2839,7 @@ var api = {
 module.exports = api;
 
 /***/ }),
-
-/***/ 123:
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2710,7 +2850,7 @@ module.exports = api;
 
 exports.__esModule = true;
 
-var _devconfig = __webpack_require__(59);
+var _devconfig = __webpack_require__(0);
 
 var _devconfig2 = _interopRequireDefault(_devconfig);
 
@@ -2744,83 +2884,7 @@ var Fliter = function () {
 exports['default'] = Fliter;
 
 /***/ }),
-
-/***/ 124:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-exports.__esModule = true;
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * Created by o2o3 on 16/11/1.
- */
-
-var FlowDatas = function () {
-  function FlowDatas(obj) {
-    // this.datasObject = obj;
-
-    _classCallCheck(this, FlowDatas);
-  }
-
-  FlowDatas.init = function init(app) {
-    var obj = app.$datas;
-    console.log(app, 'obj');
-
-    var _loop = function _loop(i) {
-      if (obj.hasOwnProperty(i) && Object.getOwnPropertyDescriptor(obj, i).configurable) {
-        var _tmp = void 0;
-        Object.defineProperty(obj, i, {
-          get: function get() {
-            console.log('load data....', _tmp);
-            return _tmp;
-          },
-          set: function set(value) {
-            console.log('set data....', value);
-            app.model.datas[i] = value;
-            _tmp = value;
-          }
-        });
-      }
-      // console.log(Object.getOwnPropertyDescriptor(obj, i), 'obj');
-    };
-
-    for (var i in obj) {
-      _loop(i);
-    }
-  };
-
-  FlowDatas.addFlowData = function addFlowData(app, dom, attribute) {
-    console.log(app.$datas, 'app.$datas');
-    // console.log(dom, 'dom');
-    // console.log(attribute, 'attribute');
-    var _tmp = void 0;
-    Object.defineProperty(app.$datas, attribute, {
-      get: function get() {
-        console.log('Load data....', _tmp);
-        return _tmp;
-      },
-      set: function set(value) {
-        console.log('Change DOM....', value);
-        app.view.container.find('[fuck-bind=' + attribute + ']').text(value);
-        dom.val(value);
-        // dom.text(value);
-        _tmp = value;
-      }
-    });
-  };
-
-  return FlowDatas;
-}();
-
-exports.FlowDatas = FlowDatas;
-
-/***/ }),
-
-/***/ 125:
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2831,23 +2895,23 @@ exports.FlowDatas = FlowDatas;
 
 exports.__esModule = true;
 
-var _devconfig = __webpack_require__(59);
+var _devconfig = __webpack_require__(0);
 
 var _devconfig2 = _interopRequireDefault(_devconfig);
 
-var _method = __webpack_require__(122);
+var _method = __webpack_require__(9);
 
 var _method2 = _interopRequireDefault(_method);
 
-var _loading = __webpack_require__(121);
+var _loading = __webpack_require__(8);
 
 var _loading2 = _interopRequireDefault(_loading);
 
-var _storage = __webpack_require__(126);
+var _storage = __webpack_require__(12);
 
 var _storage2 = _interopRequireDefault(_storage);
 
-var _FlowDatas = __webpack_require__(124);
+var _FlowDatas = __webpack_require__(1);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
@@ -2977,8 +3041,7 @@ var Model = function () {
 exports['default'] = Model;
 
 /***/ }),
-
-/***/ 126:
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3039,8 +3102,7 @@ var Storage = function () {
 exports['default'] = Storage;
 
 /***/ }),
-
-/***/ 127:
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3082,8 +3144,7 @@ var Tools = function Tools(type) {
 exports["default"] = Tools;
 
 /***/ }),
-
-/***/ 128:
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3091,7 +3152,13 @@ exports["default"] = Tools;
 
 exports.__esModule = true;
 
-var _FlowDatas = __webpack_require__(124);
+var _FlowDatas = __webpack_require__(1);
+
+var _navigator = __webpack_require__(23);
+
+var _navigator2 = _interopRequireDefault(_navigator);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } } /**
                                                                                                                                                            * Created by o2o3 on 16/10/24.
@@ -3105,7 +3172,9 @@ var Bind = function () {
     this.dom = dom;
     this.attr = attr;
     // console.log(app, 'app');
-    $(document).on('input', '[fuck-model=' + attr + ']', function (e) {
+    var str = _navigator2['default'] === "IE8" ? 'keyup' : 'input';
+    $(document).on(str, '[fuck-model=' + attr + ']', function (e) {
+      console.log(e, 'e');
       app.$datas[attr] = $(this).val();
     });
     _FlowDatas.FlowDatas.addFlowData(app, this.dom, this.attr);
@@ -3124,8 +3193,7 @@ var Bind = function () {
 exports['default'] = Bind;
 
 /***/ }),
-
-/***/ 129:
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3260,8 +3328,7 @@ var Event = function () {
 exports['default'] = Event;
 
 /***/ }),
-
-/***/ 130:
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3460,8 +3527,7 @@ var Replacer = function () {
 exports['default'] = Replacer;
 
 /***/ }),
-
-/***/ 131:
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3471,19 +3537,19 @@ exports.__esModule = true;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _Fliter = __webpack_require__(123);
+var _Fliter = __webpack_require__(10);
 
 var _Fliter2 = _interopRequireDefault(_Fliter);
 
-var _Replacer = __webpack_require__(130);
+var _Replacer = __webpack_require__(16);
 
 var _Replacer2 = _interopRequireDefault(_Replacer);
 
-var _Event = __webpack_require__(129);
+var _Event = __webpack_require__(15);
 
 var _Event2 = _interopRequireDefault(_Event);
 
-var _Bind = __webpack_require__(128);
+var _Bind = __webpack_require__(14);
 
 var _Bind2 = _interopRequireDefault(_Bind);
 
@@ -3633,8 +3699,7 @@ var View = function () {
 exports['default'] = View;
 
 /***/ }),
-
-/***/ 313:
+/* 18 */
 /***/ (function(module, exports) {
 
 // Console-polyfill. MIT license.
@@ -3657,78 +3722,36 @@ exports['default'] = View;
 
 
 /***/ }),
-
-/***/ 319:
+/* 19 */,
+/* 20 */,
+/* 21 */,
+/* 22 */,
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-// Polyfills
-// (these modules are what are in 'angular2/bundles/angular2-polyfills' so don't use that here)
-
-// import 'ie-shim'; // Internet Explorer
-// import 'es6-shim';
-// import 'es6-promise';
-// import 'es7-reflect-metadata';
-
-// Prefer CoreJS over the polyfills above
-// import 'core-js/es6';
-// import 'core-js/es7/reflect';
-// require('zone.js/dist/zone');
-
-
-if (!ENV) {
-  var ENV = 'development';
-}
-
-if (ENV === 'production') {
-  // Production
-} else {
-  // Development
-
-
-  Error.stackTraceLimit = Infinity;
-
-  // require('zone.js/dist/long-stack-trace-zone');
-}
-
-if (!Object.assign && typeof Object.assign === 'undefined') {
-  console.log('unknow object');
-  Object.assign = function () {
-    var args = arguments;
-    for (var i = 1; i < args.length; i++) {
-      for (var j in args[i]) {
-        args[0][j] = args[i][j];
-      }
-    }
-    return args[0];
-  };
-}
-
-/***/ }),
-
-/***/ 59:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
+exports.__esModule = true;
 /**
- * Created by o2o3 on 16/8/31.
+ * Created by Administrator on 2017/5/22.
  */
+var browser = navigator.appName;
+var b_version = navigator.appVersion;
+var version = b_version.split(";");
+var trim_Version = version[1].replace(/[ ]/g, "");
+var ie = '';
+if (browser === "Microsoft Internet Explorer" && trim_Version === "MSIE6.0") {
+  ie = "IE6";
+} else if (browser === "Microsoft Internet Explorer" && trim_Version === "MSIE7.0") {
+  ie = "IE7";
+} else if (browser === "Microsoft Internet Explorer" && trim_Version === "MSIE8.0") {
+  ie = "IE8";
+} else if (browser === "Microsoft Internet Explorer" && trim_Version === "MSIE9.0") {
+  ie = "IE9";
+}
 
-
-var env = {
-    version: '2.0.0',
-    expire: false, //美业师首屏缓存   true:开启  false:关闭
-    dev: true,
-    // url:'http://192.168.1.199:7891/open/api/?method=',
-    url: 'http://crm.qiaocat.com/open/api/?method=',
-    // img_prefix:'http://192.168.1.199:7891'
-    img_prefix: 'http://crm.qiaocat.com'
-};
-
-module.exports = env;
+exports["default"] = ie;
 
 /***/ })
-
-/******/ });
+/******/ ]);
