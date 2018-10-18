@@ -16,25 +16,25 @@ class Replacer {
     this.type = type;
     this.dom = getDomsByAttr.call(container, type);
     // switch (type) {
-    //   case 'fuck-each':
+    //   case 'lva-each':
     //     this.type = type;
-    //     this.dom = getDomsByAttr('fuck-each');
+    //     this.dom = getDomsByAttr('lva-each');
     //     break;
-    //   case 'fuck-bind':
+    //   case 'lva-bind':
     //     this.type = type;
-    //     this.dom = getDomsByAttr('fuck-bind');
+    //     this.dom = getDomsByAttr('lva-bind');
     //     break;
-    //   case 'fuck-bind-html':
+    //   case 'lva-bind-html':
     //     this.type = type;
-    //     this.dom = getDomsByAttr('fuck-bind-html');
+    //     this.dom = getDomsByAttr('lva-bind-html');
     //     break;
-    //   case 'fuck-src':
+    //   case 'lva-src':
     //     this.type = type;
-    //     this.dom = getDomsByAttr('fuck-src');
+    //     this.dom = getDomsByAttr('lva-src');
     //     break;
-    //   case 'fuck-if':
+    //   case 'lva-if':
     //     this.type = type;
-    //     this.dom = getDomsByAttr('fuck-if');
+    //     this.dom = getDomsByAttr('lva-if');
     //     break;
     // }
   }
@@ -44,21 +44,21 @@ class Replacer {
     // console.log(this.json);
     let doms = this.dom;
     let self = this;
-    let bind = '[fuck-bind]',
-      html = '[fuck-bind-html]',
-      each = '[fuck-each]',
-      src = '[fuck-src]',
-      fif = '[fuck-if]';
+    let bind = '[lva-bind]',
+      html = '[lva-bind-html]',
+      each = '[lva-each]',
+      src = '[lva-src]',
+      fif = '[lva-if]';
 
     function jsonChangeToText(dom, json) {
-      let bindAttrVal = dom.attr('fuck-bind');
+      let bindAttrVal = dom.attr('lva-bind');
       // console.log(self.type, 'self.type');
       // console.log(dom,'dom');
       // console.log(json,'json');
       // console.log(bindAttrVal,'bindAttrVal');
       if (typeof json === 'string') {
         dom.text(json);
-        dom.removeAttr('fuck-bind');
+        dom.removeAttr('lva-bind');
         return;
       }
       // console.log(dom, ' dom');
@@ -69,18 +69,18 @@ class Replacer {
 
       if (typeof json === 'string') {
         dom.html(json);
-        dom.removeAttr('Fuck-bind-html');
+        dom.removeAttr('lva-bind-html');
         return;
       }
       dom.html(json[dom.attr(self.type)]);
-      dom.removeAttr('Fuck-bind-html');
+      dom.removeAttr('lva-bind-html');
     }
 
     function jsonChangeToSrc(dom, json) {
       let srcAttrVal = dom.attr(self.type);
       if (typeof json === 'string') {
         dom.attr('src', json);
-        dom.removeAttr('fuck-src');
+        dom.removeAttr('lva-src');
         return;
       }
       dom.attr('src', json[srcAttrVal]);
@@ -91,7 +91,7 @@ class Replacer {
       let eachArr = json[eachAttrVal];
       let picTestReg = new RegExp('jpg|png|gif');
       eachArr = typeof eachArr === 'string' ? eachArr.slice(-1) == ',' ? eachArr.slice(0, eachArr.length - 1).split(',') : picTestReg.test(eachArr.slice(-3)) ? eachArr.split(',') : eachArr.split(',').slice(0, -1) : eachArr;
-      dom.before('<!--Start Fuck-each-->');
+      dom.before('<!--Start lva-each-->');
       eachArr.forEach((v, i)=> {
         if (i === eachArr.length - 1) return false;
         dom.after(dom.clone());
@@ -104,7 +104,7 @@ class Replacer {
           jsonChangeToSrc($v.find(src), eachArr[i]);
         }
         if ($v.find(bind).length > 0) {
-          // console.log($v.find(bind).attr('fuck-bind'),'22');
+          // console.log($v.find(bind).attr('lva-bind'),'22');
           // console.log(eachArr[i],'2233');
           jsonChangeToText($v.find(bind), eachArr[i]);
         }
@@ -113,14 +113,14 @@ class Replacer {
         }
         $v.removeAttr(each.slice(1, each.length - 1));
         if (i === newEachDoms.length - 1) {
-          $v.after('<!--End Fuck-each-->');
+          $v.after('<!--End lva-each-->');
         }
 
       });
     }
 
     function ifDom(dom, json) {
-      let ifAttr = dom.attr('Fuck-if');
+      let ifAttr = dom.attr('lva-if');
       let trueIfAttr;
       if (ifAttr.indexOf('!') > -1) {
         trueIfAttr = ifAttr.replace('!', '');
@@ -137,43 +137,43 @@ class Replacer {
       if (ifBoolean) {
         dom.show();
       } else {
-        dom.before($('<!-- Fuck-if start-->')).after($('<!-- Fuck-if end-->'));
+        dom.before($('<!-- lva-if start-->')).after($('<!-- lva-if end-->'));
         dom.remove();
       }
     }
 
     if (doms.length === 1) {
-      if (this.type === 'fuck-each') {
+      if (this.type === 'lva-each') {
         // console.log(doms,'doms');
         // console.log(json,'json');
         // console.log(doms,'doms');
         doms.hide();
         cloneEach(doms, json);
       }
-      if (this.type === 'fuck-bind') {
+      if (this.type === 'lva-bind') {
         jsonChangeToText(doms, json);
       }
-      if (this.type === 'fuck-bind-html') {
+      if (this.type === 'lva-bind-html') {
         jsonChangeToHtml(doms, json);
       }
-      if (this.type === 'fuck-src') {
+      if (this.type === 'lva-src') {
         jsonChangeToSrc(doms, json);
       }
-      if (this.type === 'fuck-if') {
+      if (this.type === 'lva-if') {
         ifDom(doms, json);
       }
     } else {
       doms.each((i, v)=> {
-        if (this.type === 'fuck-bind') {
+        if (this.type === 'lva-bind') {
           jsonChangeToText($(v), json);
         }
-        if (this.type === 'fuck-bind-html') {
+        if (this.type === 'lva-bind-html') {
           jsonChangeToHtml($(v), json);
         }
-        if (this.type === 'fuck-src') {
+        if (this.type === 'lva-src') {
           jsonChangeToSrc($(v), json);
         }
-        if (this.type === 'fuck-if') {
+        if (this.type === 'lva-if') {
           ifDom($(v), json);
         }
       });

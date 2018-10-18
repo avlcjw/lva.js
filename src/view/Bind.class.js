@@ -11,7 +11,7 @@ class Bind {
     this.attr = attr;
     // console.log(app, 'app');
     let str = ie === "IE8" ? 'keyup' : 'input';
-    $(document).on(str, '[fuck-model=' + attr + ']', function (e) {
+    $(document).on(str, '[lva-model=' + attr + ']', function (e) {
       console.log(e, 'e');
       app.$datas[attr] = $(this).val();
     });

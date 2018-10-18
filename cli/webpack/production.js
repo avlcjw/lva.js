@@ -2,7 +2,7 @@
  * Webpack config for productions
  */
 module.exports = require('./make')({
-  host: 'yun.wtoip.com',
+  host: 'yun.lva.com',
   port: 80,
   proxy: {
     "/": {

@@ -4,7 +4,7 @@
 $(function () {
   // console.log(123);
 
-  window.wtoip = new Wtoip({
+  window.lva = new lva({
     model: {
       datas: {
         atestData: '1',
@@ -43,7 +43,7 @@ $(function () {
     }
   });
 
-  wtoip.view.render(wtoip.model.datas);
+  lva.view.render(lva.model.datas);
 
   window.x = document.getElementById('username');
 
@@ -62,12 +62,12 @@ $(function () {
   });
 
   setTimeout(function () {
-    wtoip.$datas.password = 321;
+    lva.$datas.password = 321;
     console.log(x);
     // console.log(Object.getOwnPropertyDescriptor(x), 'adsasdsd');
   }, 3000);
 
   // console.log($(document).find('[su]'));
 
-  console.log(wtoip, 'wtoip');
+  console.log(lva, 'lva');
 });

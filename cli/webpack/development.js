@@ -2,7 +2,7 @@
  * Webpack config for development
  */
 module.exports = require('./make')({
-  host: 'yun.wtoip.com',
+  host: 'yun.lva.com',
   port: 8000,
   proxy: {
     "/": {

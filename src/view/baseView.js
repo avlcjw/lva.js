@@ -26,45 +26,45 @@ class View {
     let $con = this.container;
     let _innerhtml = $con.html();
     let binDataReg = new RegExp('{{[A-z]*}}', 'g');
-    let directiveArr = new RegExp('fuck-.*', 'g');
+    let directiveArr = new RegExp('lva-.*', 'g');
     let removeNotesHtml = _innerhtml.replace(/<!--.*-->/g, '');
     let replacesArr = _innerhtml.match(binDataReg);
     let selt = this;
     //delete notes
     $con.html(removeNotesHtml);
 
-    if (findDomByAttr('Fuck-each')) {
-      let eachs = new Replacer('fuck-each', this.container, global_datas);
+    if (findDomByAttr('lva-each')) {
+      let eachs = new Replacer('lva-each', this.container, global_datas);
       eachs.replace(json);
     }
 
-    if (findDomByAttr('Fuck-model')) {
-      let modelDom = findDomByAttr('Fuck-model');
+    if (findDomByAttr('lva-model')) {
+      let modelDom = findDomByAttr('lva-model');
       modelDom.each((i,v)=>{
-        let modelAttr = $(v).attr('Fuck-model');
+        let modelAttr = $(v).attr('lva-model');
         console.log(this.app,'this.app');
         let ms = new Bind(this.app, $(v), modelAttr);
         // ms.addBind();
       });
     }
 
-    if (findDomByAttr('Fuck-bind')) {
-      let bs = new Replacer('fuck-bind', this.container, global_datas);
+    if (findDomByAttr('lva-bind')) {
+      let bs = new Replacer('lva-bind', this.container, global_datas);
       bs.replace(json);
     }
 
-    if (findDomByAttr('Fuck-bind-html')) {
-      let htmls = new Replacer('fuck-bind-html', this.container, global_datas);
+    if (findDomByAttr('lva-bind-html')) {
+      let htmls = new Replacer('lva-bind-html', this.container, global_datas);
       htmls.replace(json);
     }
 
-    if (findDomByAttr('Fuck-src')) {
-      let srcs = new Replacer('fuck-src', this.container, global_datas);
+    if (findDomByAttr('lva-src')) {
+      let srcs = new Replacer('lva-src', this.container, global_datas);
       srcs.replace(json);
     }
 
-    if (findDomByAttr('Fuck-if')) {
-      let ifs = new Replacer('fuck-if', this.container, global_datas);
+    if (findDomByAttr('lva-if')) {
+      let ifs = new Replacer('lva-if', this.container, global_datas);
       ifs.replace(json);
     }
 
@@ -82,17 +82,17 @@ class View {
       $con.html(newStr);
     }
 
-    if (findDomByAttr('Fuck-fliter')) {
-      let fliterDoms = findDomByAttr('Fuck-fliter');
+    if (findDomByAttr('lva-fliter')) {
+      let fliterDoms = findDomByAttr('lva-fliter');
       if (fliterDoms.length === 1) {
-        let fliterAttrVal = fliterDoms.attr('Fuck-fliter');
+        let fliterAttrVal = fliterDoms.attr('lva-fliter');
         Fliter.change.call(fliterDoms, fliterAttrVal);
-        fliterDoms.removeAttr('Fuck-fliter');
+        fliterDoms.removeAttr('lva-fliter');
       } else {
         fliterDoms.each((i, v)=> {
-          let fliterAttrVal = $(v).attr('Fuck-fliter');
+          let fliterAttrVal = $(v).attr('lva-fliter');
           Fliter.change.call($(v), fliterAttrVal);
-          $(v).removeAttr('Fuck-fliter');
+          $(v).removeAttr('lva-fliter');
         });
       }
     }

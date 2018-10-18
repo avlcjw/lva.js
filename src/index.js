@@ -7,21 +7,21 @@ import View from './view/baseView';
 import Tools from './tools/tools';
 import ie from './tools/navigator';
 
-class Wtoip {
+class lva {
   constructor(config) {
     if (typeof config === 'object') {
       // alert(123222);
     }
     console.log(config, 'config');
     /*
-     *  防止页面 fuck-if 的闪烁
+     *  防止页面 lva-if 的闪烁
      */
     var x = document.createElement('div');
     let styleText = `
-        [fuck-if]{
+        [lva-if]{
           display:none;
         }
-        [fuck-each]{
+        [lva-each]{
           display:none;      
         }`;
     x.innerHTML = `x<style>${styleText}</style>`;
@@ -51,4 +51,4 @@ class Wtoip {
 
 }
 
-window.Wtoip = Wtoip;
+window.lva = lva;

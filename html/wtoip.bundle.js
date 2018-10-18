@@ -149,7 +149,7 @@ var FlowDatas = function () {
       },
       set: function set(value) {
         console.log('Change DOM....', value);
-        app.view.container.find('[fuck-bind=' + attribute + ']').text(value);
+        app.view.container.find('[lva-bind=' + attribute + ']').text(value);
         dom.val(value);
         // dom.text(value);
         _tmp = value;
@@ -242,19 +242,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                                                                                                                                                            * Created by avlcjw on 2017/5/20.
                                                                                                                                                            */
 
-var Wtoip = function () {
-  function Wtoip(config) {
-    _classCallCheck(this, Wtoip);
+var lva = function () {
+  function lva(config) {
+    _classCallCheck(this, lva);
 
     if ((typeof config === 'undefined' ? 'undefined' : _typeof(config)) === 'object') {
       // alert(123222);
     }
     console.log(config, 'config');
     /*
-     *  防止页面 fuck-if 的闪烁
+     *  防止页面 lva-if 的闪烁
      */
     var x = document.createElement('div');
-    var styleText = '\n        [fuck-if]{\n          display:none;\n        }\n        [fuck-each]{\n          display:none;      \n        }';
+    var styleText = '\n        [lva-if]{\n          display:none;\n        }\n        [lva-each]{\n          display:none;      \n        }';
     x.innerHTML = 'x<style>' + styleText + '</style>';
     document.getElementsByTagName('head')[0].appendChild(x.lastChild);
 
@@ -273,14 +273,14 @@ var Wtoip = function () {
     // this.view.replace.call(this,$(this.view.container), this.model.datas);
   }
 
-  Wtoip.Tools = function Tools(type) {
+  lva.Tools = function Tools(type) {
     return new _tools2['default'](type);
   };
 
-  return Wtoip;
+  return lva;
 }();
 
-window.Wtoip = Wtoip;
+window.lva = lva;
 
 /***/ }),
 /* 4 */
@@ -2980,8 +2980,8 @@ var Model = function () {
     }
 
     return false;
-    this['fuckDatas'] = {};
-    var modelDoms = findDomByAttr.call(this, 'Fuck-model');
+    this['lvaDatas'] = {};
+    var modelDoms = findDomByAttr.call(this, 'lva-model');
     if (modelDoms.length === 1) {
       modelDoms.on('input', function (e) {
         changeText(modelDoms, e.currentTarget.value);

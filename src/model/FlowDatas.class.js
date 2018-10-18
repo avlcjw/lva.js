@@ -43,7 +43,7 @@ class FlowDatas {
       },
       set: (value) => {
         console.log('Change DOM....', value);
-        app.view.container.find('[fuck-bind='+ attribute +']').text(value);
+        app.view.container.find('[lva-bind='+ attribute +']').text(value);
         dom.val(value);
         // dom.text(value);
         _tmp = value;

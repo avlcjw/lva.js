@@ -1,13 +1,13 @@
 {
-  "name": "wtoip",
+  "name": "lva",
   "version": "1.0.0",
-  "description": "wtopip framework by Wtopip-Team",
+  "description": "lva framework by Wtopip-Team",
   "main": "webpack.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "wtoip",
+    "lva",
     "frontend",
     "framework",
     "javascript"

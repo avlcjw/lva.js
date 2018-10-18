@@ -8,7 +8,7 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
   entry: {
-    'wtoip': './framework.js',
+    'lva': './framework.js',
     // 'test': './src/entry/details_entry.js',
   },
   output: {

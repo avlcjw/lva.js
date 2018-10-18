@@ -71,32 +71,32 @@ class Model {
 
 
     return false;
-    this['fuckDatas'] = {};
-    let modelDoms = findDomByAttr.call(this, 'Fuck-model');
+    this['lvaDatas'] = {};
+    let modelDoms = findDomByAttr.call(this, 'lva-model');
     if (modelDoms.length === 1) {
       modelDoms.on('input', (e)=> {
         changeText(modelDoms, e.currentTarget.value);
       });
     }
 
-    this.fuckDatas[key] = val;
+    this.lvaDatas[key] = val;
     if (val) {
       changeText(modelDoms, val);
     }
 
-    Object.defineProperty(this.fuckDatas, key, {
+    Object.defineProperty(this.lvaDatas, key, {
       get: () => {
         return this.datas[key];
       },
       set: (value) => {
-        this.fuckDatas[key] = value;
+        this.lvaDatas[key] = value;
         changeText(modelDoms, val);
       },
     });
 
     function changeText(e, v) {
-      let modelAttrVal = e.attr('Fuck-model');
-      let bindDom = $(`[Fuck-bind=${modelAttrVal}]`);
+      let modelAttrVal = e.attr('lva-model');
+      let bindDom = $(`[lva-bind=${modelAttrVal}]`);
       bindDom.text(v);
     }
 
